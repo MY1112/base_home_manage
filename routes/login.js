@@ -10,6 +10,7 @@ const routers = router
         console.log(ctx.url)
         ctx.body = result;
     })
+    .post('/signup', loginController.signUp)
     .post('/signin', loginController.signIn)
 
 module.exports = routers;
