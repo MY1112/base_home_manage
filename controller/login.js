@@ -1,50 +1,51 @@
-const User = require('./../models/user');
+const Login = require('./../models/user');
 
 module.exports = {
     async signUp (ctx) {
 
         let result = {
+            code: 20008,
             success: false,
-            message: '注册失败'
+            msg: '注册失败'
         };
-        const { username, password } = ctx.request.body;
+        const { username, password, identity } = ctx.request.body;
 
         if (!username && !password) {
-            result.message = '请填写用户名和密码';
+            result.msg = '请填写用户名和密码';
             ctx.body = result;
         } else {
-            let user = await User.findOne({username});
+            let user = await Login.findOne({username});
             //检查用户名是否已存在
             if(!user) {
-                const newUser = new User({
+                const newUser = new Login({
                     username: username,
                     password: password,
+                    identity: identity
                 });
 
                 const doc = await newUser.save();
                 if (!doc.errors) {
-                    ctx.body = {success: true, message: '注册成功'}
+                    ctx.body = {code: 10000,success: true, msg: '注册成功'}
                 } else {
                     ctx.body = result;
                 }
             } else {
-                ctx.body = { success: false, message: '用户名已存在'};
+                ctx.body = { code: 20008, success: false, msg: '用户名已存在'};
             }
         }
     },
 
     async signIn (ctx) {
 
-        console.log(ctx.url)
         let result = {
             code: 20008,
             success: false,
             msg: '用户不存在'
         };
         //从请求体中获得参数
-        const { username,  password } = ctx.request.body.values;
+        const { username,  password } = ctx.request.body;
         //检查数据库中是否存在该用户名
-        await User.findOne({
+        await Login.findOne({
             username
         }, (err, user) => {
             if (err) {
