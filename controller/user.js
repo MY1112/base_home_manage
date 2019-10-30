@@ -55,19 +55,19 @@ module.exports = {
             success: false,
             msg: '修改失败'
         };
-        const { username, password, identity } = ctx.request.body;
+        const { username, password, identity, parents } = ctx.request.body;
     
-        const res = User.update({username: username},{$set:{
+        await User.update({username: username},{$set:{
             username: username,
             password: password,
-            identity: identity
-        }});
-
-        console.log(res.errors)
-        if (!res.errors) {
-            ctx.body = {code: 10000,success: true, msg: '修改成功'}
-        } else {
-            ctx.body = result;
-        }
+            identity: identity,
+            parents: parents
+        }},(err,res) => {
+            if (!err) {
+                ctx.body = {code: 10000,success: true, msg: '修改成功'}
+            } else {
+                ctx.body = result;
+            }
+        });
     }
 }

@@ -1,4 +1,4 @@
-const Login = require('./../models/user');
+const User = require('./../models/user');
 
 module.exports = {
     async signUp (ctx) {
@@ -8,19 +8,20 @@ module.exports = {
             success: false,
             msg: '注册失败'
         };
-        const { username, password, identity } = ctx.request.body;
+        const { username, password, identity, parents } = ctx.request.body;
 
         if (!username && !password) {
             result.msg = '请填写用户名和密码';
             ctx.body = result;
         } else {
-            let user = await Login.findOne({username});
+            let user = await User.findOne({username});
             //检查用户名是否已存在
             if(!user) {
-                const newUser = new Login({
+                const newUser = new User({
                     username: username,
                     password: password,
-                    identity: identity
+                    identity: identity,
+                    parents: parents
                 });
 
                 const doc = await newUser.save();
@@ -45,7 +46,7 @@ module.exports = {
         //从请求体中获得参数
         const { username,  password } = ctx.request.body;
         //检查数据库中是否存在该用户名
-        await Login.findOne({
+        await User.findOne({
             username
         }, (err, user) => {
             if (err) {
@@ -56,7 +57,11 @@ module.exports = {
             } else {
                 //判断密码是否正确
                 if (password === user.password) {
-                    ctx.body = {code: 10000, success: true, msg: '登入成功'}
+                    ctx.body = {code: 10000, success: true, msg: '登入成功',data:{
+                        username: user.username,
+                        identity: user.identity,
+                        parents: user.parents
+                    }}
                 } else {
                     ctx.body = {code: 20008, success: false, msg: '密码错误'}
                 }

@@ -12,6 +12,9 @@ const UserSchema = new Schema({
     },
     identity: {
         type: String
+    },
+    parents: {
+        type: String
     }
 });
 
