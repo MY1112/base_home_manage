@@ -8,31 +8,27 @@ module.exports = {
             success: false,
             msg: '注册失败'
         };
-        const { username, password, identity, parents } = ctx.request.body;
+        const { username, password, identity, parents, pid } = ctx.request.body;
 
-        if (!username && !password) {
-            result.msg = '请填写用户名和密码';
-            ctx.body = result;
-        } else {
-            let user = await User.findOne({username});
-            //检查用户名是否已存在
-            if(!user) {
-                const newUser = new User({
-                    username: username,
-                    password: password,
-                    identity: identity,
-                    parents: parents
-                });
+        let user = await User.findOne({username});
+        //检查用户名是否已存在
+        if(!user) {
+            const newUser = new User({
+                username: username,
+                password: password,
+                identity: identity,
+                parents: parents,
+                pid: pid
+            });
 
-                const doc = await newUser.save();
-                if (!doc.errors) {
-                    ctx.body = {code: 10000,success: true, msg: '注册成功'}
-                } else {
-                    ctx.body = result;
-                }
+            const doc = await newUser.save();
+            if (!doc.errors) {
+                ctx.body = {code: 10000,success: true, msg: '注册成功'}
             } else {
-                ctx.body = { code: 20008, success: false, msg: '用户名已存在'};
+                ctx.body = result;
             }
+        } else {
+            ctx.body = { code: 20008, success: false, msg: '用户名已存在'};
         }
     },
 
@@ -58,9 +54,11 @@ module.exports = {
                 //判断密码是否正确
                 if (password === user.password) {
                     ctx.body = {code: 10000, success: true, msg: '登入成功',data:{
+                        _id: user._id,
                         username: user.username,
                         identity: user.identity,
-                        parents: user.parents
+                        parents: user.parents,
+                        pid: user.pid || ''
                     }}
                 } else {
                     ctx.body = {code: 20008, success: false, msg: '密码错误'}

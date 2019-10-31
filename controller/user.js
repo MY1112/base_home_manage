@@ -11,10 +11,23 @@ module.exports = {
             msg: '数据为空'
         };
         //从请求体中获得参数
-        const { username } = ctx.request.body;
+        const { keywords, identity, pid } = ctx.request.body;
         let obj = {}
-        if (username) {
-            obj = { username: new RegExp(username,'i') }
+        if (keywords && identity === 'god') {
+            obj = { username: new RegExp(keywords,'i') }
+        }
+        if (identity === 'admin') {
+            if (keywords) {
+                obj = {$and: [
+                    {$or:[{_id:mongoose.Types.ObjectId(pid)},{pid:pid}]},
+                    {$or:[{username: new RegExp(keywords,'i')}]}
+                ]}
+            } else {
+                obj = {$or:[
+                    {_id:mongoose.Types.ObjectId(pid)},
+                    {pid:pid}
+                ]}
+            }
         }
         //检查数据库中是否存在该用户名
         await User.find(obj, (err, user) => {
@@ -55,12 +68,11 @@ module.exports = {
             success: false,
             msg: '修改失败'
         };
-        const { username, password, identity, parents } = ctx.request.body;
+        const { username, password, parents } = ctx.request.body;
     
         await User.update({username: username},{$set:{
             username: username,
             password: password,
-            identity: identity,
             parents: parents
         }},(err,res) => {
             if (!err) {

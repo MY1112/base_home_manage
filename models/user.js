@@ -15,6 +15,9 @@ const UserSchema = new Schema({
     },
     parents: {
         type: String
+    },
+    pid: {
+        type: String
     }
 });
 
