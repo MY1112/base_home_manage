@@ -53,7 +53,7 @@ module.exports = {
         } = ctx.request.body;
 
             const newMember = new Member({
-                uid: uuidv1(),
+                uid: uuidv1().replace(/[-]/g, ''),
                 address,
                 birthplace,
                 dateBirth,
@@ -85,20 +85,120 @@ module.exports = {
             msg: '数据为空'
         };
         //从请求体中获得参数
-        const {  } = ctx.request.query;
+        // const {  } = ctx.request.query;
         let obj = {}
         //检查数据库中是否存在该用户名
         await Member.find(obj, (err, member) => {
             if (err) {
+                ctx.body = {code: 20002, success: false, msg: '异常报错'}
                 throw err;
             }
             if (!member.length) {
                 ctx.body = {...result,data:member};
             } else {
                 const listData = member && member.length ? member : []
-                console.log(listData)
                 const resData = getTreeList(listData, '0')
                 ctx.body = {code: 10001, success: true, msg: '数据非空',data:resData}
+            }
+        })
+    },
+
+    async memberDetail (ctx) {
+
+        let result = {
+            code: 10002,
+            success: false,
+            msg: '数据为空'
+        };
+        //从请求体中获得参数
+        const { id } = ctx.request.query
+        console.log(id)
+        // const childNum = Member.find({'pids': id},{"_id":1,'pids':1}).count()
+        await Member.findOne({
+            uid: id
+        }, (err, member) => {
+            if (err) {
+                ctx.body = {code: 20002, success: false, msg: '异常报错'}
+                throw err;
+            }
+            console.log(member)
+            if (!member) {
+                ctx.body = result;
+            } else {
+                
+                ctx.body = {
+                    code: 10001,
+                    success:true,
+                    msg: '操作成功，数据非空',
+                    data: {...member}
+                }
+            }
+        })
+    },
+
+    async memberUpdate (ctx) {
+        let result = {
+            code: 20000,
+            success: false,
+            msg: '修改失败'
+        };
+        const { 
+            id,
+            address,
+            birthplace,
+            dateBirth,
+            dateDeath,
+            deeds,
+            genderFlag,
+            livingFlag,
+            marryFlag,
+            pid,
+            pids,
+            remark,
+            spouseName,
+            title
+        } = ctx.request.body;
+    
+        await Member.update({uid: id},{$set:{
+            address,
+            birthplace,
+            dateBirth,
+            dateDeath,
+            deeds,
+            genderFlag,
+            livingFlag,
+            marryFlag,
+            pid,
+            pids,
+            remark,
+            spouseName,
+            title
+        }},(err,res) => {
+            if (!err) {
+                ctx.body = {code: 10000,success: true, msg: '修改成功'}
+            } else {
+                ctx.body = result;
+            }
+        });
+    },
+
+    async memberDel (ctx) {
+        let result = {
+            code: 20000,
+            success: false,
+            msg: '删除失败'
+        };
+        //从请求体中获得参数
+        const { id } = ctx.request.query
+        await Member.deleteOne({uid: id}, (err, member) => {
+            if (err) {
+                ctx.body = {code: 20002, success: false, msg: '异常报错'}
+                throw err;
+            }
+            if (member.deletedCount) {
+                ctx.body = {code: 10000, success: true, msg: '删除成功'}
+            } else {
+                ctx.body = result;
             }
         })
     },

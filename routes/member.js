@@ -4,5 +4,8 @@ const memberController = require('../controller/member');
 const routers = router
     .post('/addMember', memberController.addMember)
     .get('/memberTreeList', memberController.memberTreeList)
+    .get('/memberDetail', memberController.memberDetail)
+    .post('/memberUpdate', memberController.memberUpdate)
+    .get('/memberDel', memberController.memberDel)
 
 module.exports = routers;

@@ -32,6 +32,7 @@ module.exports = {
         //检查数据库中是否存在该用户名
         await User.find(obj, (err, user) => {
             if (err) {
+                ctx.body = {code: 20002, success: false, msg: '异常报错'}
                 throw err;
             }
             if (!user.length) {
@@ -52,6 +53,7 @@ module.exports = {
         const { id } = ctx.request.query
         await User.deleteOne({"_id":mongoose.Types.ObjectId(id)}, (err, user) => {
             if (err) {
+                ctx.body = {code: 20002, success: false, msg: '异常报错'}
                 throw err;
             }
             if (user.deletedCount) {
