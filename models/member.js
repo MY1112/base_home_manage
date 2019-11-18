@@ -5,7 +5,10 @@ const MemberSchema = new Schema({
         type: String // 现居地
     },
     birthplace: {
-        type: [String] // 籍贯
+        type: [String] // 籍贯value
+    },
+    birthplaceText: {
+        type: String // 籍贯文本
     },
     dateBirth: {
         type: String // 出生日期

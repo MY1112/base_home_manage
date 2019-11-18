@@ -49,7 +49,8 @@ module.exports = {
             pids,
             remark,
             spouseName,
-            title
+            title,
+            birthplaceText
         } = ctx.request.body;
 
             const newMember = new Member({
@@ -66,7 +67,8 @@ module.exports = {
                 pids,
                 remark,
                 spouseName,
-                title
+                title,
+                birthplaceText
             });
 
             const doc = await newMember.save();
@@ -112,27 +114,35 @@ module.exports = {
         };
         //从请求体中获得参数
         const { id } = ctx.request.query
-        console.log(id)
-        // const childNum = Member.find({'pids': id},{"_id":1,'pids':1}).count()
-        await Member.findOne({
-            uid: id
-        }, (err, member) => {
-            if (err) {
-                ctx.body = {code: 20002, success: false, msg: '异常报错'}
-                throw err;
-            }
-            console.log(member)
-            if (!member) {
-                ctx.body = result;
-            } else {
-                
-                ctx.body = {
-                    code: 10001,
-                    success:true,
-                    msg: '操作成功，数据非空',
-                    data: {...member}
+        const memberCount = new Promise((resolve, reject) => {
+            Member.count({'pids': id},(err, count) => {
+                if(err) {
+                    reject()
                 }
+                resolve(count)
+            })
+        })
+        const memberDetail = new Promise((resolve, reject) => {
+            Member.findOne({
+                uid: id
+            }, (err, member) => {
+                if (err) {
+                    reject()
+                }
+                resolve(member)
+            })
+        })
+
+        await Promise.all([memberCount, memberDetail]).then((res) => {
+            ctx.body = {
+                code: 10001,
+                success:true,
+                msg: '操作成功，数据非空',
+                data:{...res[1]._doc,memberNum: res[0]}
             }
+        }).catch((err) => {
+            ctx.body = {code: 20002, success: false, msg: '异常报错'}
+            throw(err)
         })
     },
 
@@ -152,8 +162,6 @@ module.exports = {
             genderFlag,
             livingFlag,
             marryFlag,
-            pid,
-            pids,
             remark,
             spouseName,
             title
@@ -168,8 +176,6 @@ module.exports = {
             genderFlag,
             livingFlag,
             marryFlag,
-            pid,
-            pids,
             remark,
             spouseName,
             title
@@ -195,7 +201,8 @@ module.exports = {
                 ctx.body = {code: 20002, success: false, msg: '异常报错'}
                 throw err;
             }
-            if (member.deletedCount) {
+            console.log(member)
+            if (member) {
                 ctx.body = {code: 10000, success: true, msg: '删除成功'}
             } else {
                 ctx.body = result;
