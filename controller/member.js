@@ -36,7 +36,8 @@ module.exports = {
             success: false,
             msg: '新增失败'
         };
-        const { 
+        const {
+            userId,
             address,
             birthplace,
             dateBirth,
@@ -68,7 +69,8 @@ module.exports = {
                 remark,
                 spouseName,
                 title,
-                birthplaceText
+                birthplaceText,
+                userId
             });
 
             const doc = await newMember.save();
@@ -87,8 +89,8 @@ module.exports = {
             msg: '数据为空'
         };
         //从请求体中获得参数
-        // const {  } = ctx.request.query;
-        let obj = {}
+        const { userId } = ctx.request.query;
+        let obj = { userId }
         //检查数据库中是否存在该用户名
         await Member.find(obj, (err, member) => {
             if (err) {
@@ -156,6 +158,7 @@ module.exports = {
             id,
             address,
             birthplace,
+            birthplaceText,
             dateBirth,
             dateDeath,
             deeds,
@@ -170,6 +173,7 @@ module.exports = {
         await Member.update({uid: id},{$set:{
             address,
             birthplace,
+            birthplaceText,
             dateBirth,
             dateDeath,
             deeds,

@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const MemberSchema = new Schema({
+    userId: {
+        type: String, // 用户id
+        require: true
+    },
     address: {
         type: String // 现居地
     },
