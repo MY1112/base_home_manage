@@ -27,6 +27,24 @@ getTreeList = (data, pid) => {
     return result
 }
 
+getTree = (data, pid) => {
+    const result = []
+    let temp = []
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].pid === pid) {
+        const obj = {
+            "id": data[i].title
+        }
+        temp = getTree(data, data[i].uid)
+        if (temp.length > 0) {
+            obj["children"] = temp
+        }
+        result.push(obj)
+      }
+    }
+    return result
+}
+
 
 module.exports = {
 
@@ -210,6 +228,32 @@ module.exports = {
                 ctx.body = {code: 10000, success: true, msg: '删除成功'}
             } else {
                 ctx.body = result;
+            }
+        })
+    },
+
+    async memberTree (ctx) {
+
+        let result = {
+            code: 10002,
+            success: false,
+            msg: '数据为空'
+        };
+        //从请求体中获得参数
+        const { userId } = ctx.request.query;
+        let obj = { userId }
+        //检查数据库中是否存在该用户名
+        await Member.find(obj, (err, member) => {
+            if (err) {
+                ctx.body = {code: 20002, success: false, msg: '异常报错'}
+                throw err;
+            }
+            if (!member.length) {
+                ctx.body = {...result,data:member};
+            } else {
+                const listData = member && member.length ? member : []
+                const resData = getTree(listData, '0')
+                ctx.body = {code: 10000, success: true, msg: '数据非空',data:resData}
             }
         })
     },
