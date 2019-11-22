@@ -42,28 +42,29 @@ module.exports = {
         //从请求体中获得参数
         const { username,  password } = ctx.request.body;
         //检查数据库中是否存在该用户名
-        await User.findOne({
+        const user = await User.findOne({
             username
-        }, (err, user) => {
+        }, (err) => {
             if (err) {
+                ctx.body = {code: 20002, success: false, msg: '异常报错'}
                 throw err;
             }
-            if (!user) {
-                ctx.body = result;
-            } else {
-                //判断密码是否正确
-                if (password === user.password) {
-                    ctx.body = {code: 10000, success: true, msg: '登入成功',data:{
-                        _id: user._id,
-                        username: user.username,
-                        identity: user.identity,
-                        parents: user.parents,
-                        pid: user.pid || ''
-                    }}
-                } else {
-                    ctx.body = {code: 20008, success: false, msg: '密码错误'}
-                }
-            }
         })
+        if (!user) {
+            ctx.body = result;
+        } else {
+            //判断密码是否正确
+            if (password === user.password) {
+                ctx.body = {code: 10000, success: true, msg: '登入成功',data:{
+                    _id: user._id,
+                    username: user.username,
+                    identity: user.identity,
+                    parents: user.parents,
+                    pid: user.pid || ''
+                }}
+            } else {
+                ctx.body = {code: 20008, success: false, msg: '密码错误'}
+            }
+        }
     }
 }

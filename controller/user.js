@@ -30,17 +30,17 @@ module.exports = {
             }
         }
         //检查数据库中是否存在该用户名
-        await User.find(obj, (err, user) => {
+        const user = await User.find(obj, (err) => {
             if (err) {
                 ctx.body = {code: 20002, success: false, msg: '异常报错'}
                 throw err;
             }
-            if (!user.length) {
-                ctx.body = {...result,data:user};
-            } else {
-                ctx.body = {code: 10001, success: true, msg: '数据非空',data:user}
-            }
         })
+        if (!user.length) {
+            ctx.body = {...result,data:user};
+        } else {
+            ctx.body = {code: 10001, success: true, msg: '数据非空',data:user}
+        }
     },
 
     async userDel (ctx) {

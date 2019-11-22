@@ -110,19 +110,19 @@ module.exports = {
         const { userId } = ctx.request.query;
         let obj = { userId }
         //检查数据库中是否存在该用户名
-        await Member.find(obj, (err, member) => {
+        const member = await Member.find(obj, (err) => {
             if (err) {
                 ctx.body = {code: 20002, success: false, msg: '异常报错'}
                 throw err;
             }
-            if (!member.length) {
-                ctx.body = {...result,data:member};
-            } else {
-                const listData = member && member.length ? member : []
-                const resData = getTreeList(listData, '0')
-                ctx.body = {code: 10001, success: true, msg: '数据非空',data:resData}
-            }
         })
+        if (!member.length) {
+            ctx.body = {...result,data:member};
+        } else {
+            const listData = member && member.length ? member : []
+            const resData = getTreeList(listData, '0')
+            ctx.body = {code: 10001, success: true, msg: '数据非空',data:resData}
+        }
     },
 
     async memberDetail (ctx) {
@@ -243,18 +243,18 @@ module.exports = {
         const { userId } = ctx.request.query;
         let obj = { userId }
         //检查数据库中是否存在该用户名
-        await Member.find(obj, (err, member) => {
+        const member = await Member.find(obj, (err, member) => {
             if (err) {
                 ctx.body = {code: 20002, success: false, msg: '异常报错'}
                 throw err;
             }
-            if (!member.length) {
-                ctx.body = {...result,data:member};
-            } else {
-                const listData = member && member.length ? member : []
-                const resData = getTree(listData, '0')
-                ctx.body = {code: 10000, success: true, msg: '数据非空',data:resData}
-            }
         })
+        if (!member.length) {
+            ctx.body = {...result,data:member};
+        } else {
+            const listData = member && member.length ? member : []
+            const resData = getTree(listData, '0')
+            ctx.body = {code: 10000, success: true, msg: '数据非空',data:resData}
+        }
     },
 }
