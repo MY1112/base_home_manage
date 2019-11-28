@@ -34,6 +34,9 @@ const MemberSchema = new Schema({
     marryFlag: {
         type: Boolean // 是否已婚
     },
+    pTitle: {
+        type: String
+    },
     pid: {
         type: String, // 上一级id
         require: true

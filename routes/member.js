@@ -8,5 +8,6 @@ const routers = router
     .post('/memberUpdate', memberController.memberUpdate)
     .get('/memberDel', memberController.memberDel)
     .get('/memberTree', memberController.memberTree)
+    .get('/memberStatistic', memberController.memberStatistic)
 
 module.exports = routers;

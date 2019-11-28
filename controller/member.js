@@ -69,7 +69,8 @@ module.exports = {
             remark,
             spouseName,
             title,
-            birthplaceText
+            birthplaceText,
+            pTitle
         } = ctx.request.body;
 
             const newMember = new Member({
@@ -88,7 +89,8 @@ module.exports = {
                 spouseName,
                 title,
                 birthplaceText,
-                userId
+                userId,
+                pTitle
             });
 
             const doc = await newMember.save();
@@ -257,4 +259,28 @@ module.exports = {
             ctx.body = {code: 10000, success: true, msg: '数据非空',data:resData}
         }
     },
+
+    async memberStatistic (ctx) {
+        let result = {
+            code: 10002,
+            success: false,
+            msg: '数据为空'
+        };
+        //从请求体中获得参数
+        const { userId } = ctx.request.query;
+        let obj = { userId }
+        //检查数据库中是否存在该用户名
+        const member = await Member.find(obj, (err, member) => {
+            if (err) {
+                ctx.body = {code: 20002, success: false, msg: '异常报错'}
+                throw err;
+            }
+        })
+        if (!member.length) {
+            ctx.body = {...result,data:member};
+        } else {
+            const listData = member && member.length ? member : []
+            ctx.body = {code: 10000, success: true, msg: '数据非空',data: listData}
+        }
+    }
 }
