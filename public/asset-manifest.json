@@ -1,10 +1,10 @@
 {
-  "main~06837ae4.css": "./css/main~06837ae4.b4a09292d405ce3d712b.css",
-  "main~06837ae4.js": "./static/js/main~06837ae4.44a45214.chunk.js",
-  "main~1f20a385.js": "./static/js/main~1f20a385.4a0415fa.chunk.js",
-  "main~678f84af.js": "./static/js/main~678f84af.4f172102.chunk.js",
-  "main~d0ae3f07.css": "./css/main~d0ae3f07.b4a09292d405ce3d712b.css",
-  "main~d0ae3f07.js": "./static/js/main~d0ae3f07.e8f80af3.chunk.js",
-  "manifest.js": "./static/js/manifest.1eacd4c0.js",
+  "main~d0ae3f07.css": "./css/main~d0ae3f07.9f9b66635ab34b9fbf08.css",
+  "main~d0ae3f07.js": "./static/js/main~d0ae3f07.1c31d72e.chunk.js",
+  "manifest.js": "./static/js/manifest.7483b4d7.js",
+  "vendor~1f20a385.js": "./static/js/vendor~1f20a385.28a66f04.chunk.js",
+  "vendor~253ae210.css": "./css/vendor~253ae210.9f9b66635ab34b9fbf08.css",
+  "vendor~253ae210.js": "./static/js/vendor~253ae210.3c3bebeb.chunk.js",
+  "vendor~678f84af.js": "./static/js/vendor~678f84af.b3c9b1bc.chunk.js",
   "index.html": "./index.html"
 }
