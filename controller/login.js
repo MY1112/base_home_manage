@@ -1,4 +1,6 @@
 const User = require('./../models/user');
+const jwt = require('jsonwebtoken');
+const config = require('../config')
 
 module.exports = {
     async signUp (ctx) {
@@ -55,7 +57,12 @@ module.exports = {
         } else {
             //判断密码是否正确
             if (password === user.password) {
+                const token = jwt.sign({
+                    username: user.username,
+                    identity: user.identity
+                }, config.secret, { expiresIn: 3600 * 24 * 2 });
                 ctx.body = {code: 10000, success: true, msg: '登入成功',data:{
+                    token,
                     _id: user._id,
                     username: user.username,
                     identity: user.identity,

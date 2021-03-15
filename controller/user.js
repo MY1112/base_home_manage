@@ -70,18 +70,41 @@ module.exports = {
             success: false,
             msg: '修改失败'
         };
-        const { username, password, parents } = ctx.request.body;
-    
-        await User.update({username: username},{$set:{
-            username: username,
-            password: password,
-            parents: parents
-        }},(err,res) => {
-            if (!err) {
-                ctx.body = {code: 10000,success: true, msg: '修改成功'}
-            } else {
-                ctx.body = result;
+        const { username, password, parents, id } = ctx.request.body;
+
+        const userUpdate = new Promise((resolve, reject) => {
+            User.update({username: username},{$set:{
+                username: username,
+                password: password,
+                parents: parents
+            }},(err,res) => {
+                if (err) {
+                    reject()
+                }
+                resolve(res)
+            });
+        })
+
+        const userChildUpdate = new Promise((resolve, reject) => {
+            User.updateMany({pid: id},{$set:{
+                parents: parents
+            }},(err,res) => {
+                if (err) {
+                    reject()
+                }
+                resolve(res)
+            });
+        })
+
+        await Promise.all([userUpdate, userChildUpdate]).then((res) => {
+            ctx.body = {
+                code: 10000,
+                success:true,
+                msg: '修改成功'
             }
-        });
+        }).catch((err) => {
+            ctx.body = result
+            throw(err)
+        })
     }
 }

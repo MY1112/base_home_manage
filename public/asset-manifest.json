@@ -1,10 +1,20 @@
 {
-  "main~d0ae3f07.css": "./css/main~d0ae3f07.9f9b66635ab34b9fbf08.css",
-  "main~d0ae3f07.js": "./static/js/main~d0ae3f07.1c31d72e.chunk.js",
-  "manifest.js": "./static/js/manifest.7483b4d7.js",
-  "vendor~1f20a385.js": "./static/js/vendor~1f20a385.28a66f04.chunk.js",
-  "vendor~253ae210.css": "./css/vendor~253ae210.9f9b66635ab34b9fbf08.css",
-  "vendor~253ae210.js": "./static/js/vendor~253ae210.3c3bebeb.chunk.js",
-  "vendor~678f84af.js": "./static/js/vendor~678f84af.b3c9b1bc.chunk.js",
-  "index.html": "./index.html"
+  "antd.css": "./css/antd.31f942a235e15cc11e0f.css",
+  "antd.js": "./static/js/antd.a15f276e.chunk.js",
+  "antv.js": "./static/js/antv.96eea192.chunk.js",
+  "antv.js.map": "./static/js/antv.96eea192.chunk.js.map",
+  "commons.js": "./static/js/commons.130663f2.chunk.js",
+  "commons.js.map": "./static/js/commons.130663f2.chunk.js.map",
+  "main.css": "./css/main.31f942a235e15cc11e0f.css",
+  "main.js": "./static/js/main.eca8c141.chunk.js",
+  "manifest.js": "./static/js/manifest.9459e8a7.js",
+  "css/antd.31f942a235e15cc11e0f.css.gz": "./css/antd.31f942a235e15cc11e0f.css.gz",
+  "css/main.31f942a235e15cc11e0f.css.gz": "./css/main.31f942a235e15cc11e0f.css.gz",
+  "index.html": "./index.html",
+  "static/js/antd.a15f276e.chunk.js.gz": "./static/js/antd.a15f276e.chunk.js.gz",
+  "static/js/antv.96eea192.chunk.js.LICENSE.txt": "./static/js/antv.96eea192.chunk.js.LICENSE.txt",
+  "static/js/antv.96eea192.chunk.js.gz": "./static/js/antv.96eea192.chunk.js.gz",
+  "static/js/commons.130663f2.chunk.js.LICENSE.txt": "./static/js/commons.130663f2.chunk.js.LICENSE.txt",
+  "static/js/commons.130663f2.chunk.js.gz": "./static/js/commons.130663f2.chunk.js.gz",
+  "static/js/main.eca8c141.chunk.js.gz": "./static/js/main.eca8c141.chunk.js.gz"
 }
